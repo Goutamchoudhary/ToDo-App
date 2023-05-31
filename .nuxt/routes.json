@@ -3,7 +3,6 @@
     "name": "index",
     "path": "/",
     "component": "/Users/gautamchoudhary/code/FieldAssist/to-do-app/pages/index.vue",
-    "chunkName": "pages/index",
-    "_name": "_ae4fd024"
+    "chunkName": "pages/index"
   }
 ]

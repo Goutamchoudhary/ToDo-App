@@ -10,27 +10,21 @@
 
 <script>
   export default {
-    props: ['task'],
+    props: ['task', 'localStorageItems'],
     methods: {
       toggleDone(){
-        // const taskItems = JSON.parse(localStorage.getItem('toDoItems'));
-        // const updatedTaskItems = taskItems.items.map((item) => {
-        //   if(this.task === item){
-        //     item.done = !item.done;
-        //     return item;
-        //   }
-        //   return item;
-        // });
 
-        this.$store.commit('TOGGLE_TASK', this.task);
-        localStorage.setItem('toDoItems', JSON.stringify(this.$store.state.tasks));
+        this.localStorageItems[this.localStorageItems.indexOf(this.task)].done = !this.task.done;
+
+        // this.$store.commit('TOGGLE_TASK', this.task);
+        localStorage.setItem('toDoItems', JSON.stringify({items: this.localStorageItems}));
       },
       removeTask(){
-        // const taskItems = JSON.parse(localStorage.getItem('toDoItems'));
-        // const updatedTaskItems = taskItems.items.map((item) => item !== this.task);
 
-        this.$store.commit('REMOVE_TASK', this.task);
-        localStorage.setItem('toDoItems', JSON.stringify(this.$store.state.tasks));
+        this.localStorageItems.splice(this.localStorageItems.indexOf(this.task), 1);
+
+        //this.$store.commit('REMOVE_TASK', this.task);
+        localStorage.setItem('toDoItems', JSON.stringify({items: this.localStorageItems}));
       }
     }
   }

@@ -13,13 +13,18 @@
     </div>
 
     <div class="tasks">
-     <!-- Component -->
-     <!-- {{ $store.state.tasks }} -->
 
-     <Task
+     <!-- <Task
       v-for="(task, idx) in $store.state.tasks"
       :key="idx"
       :task="task"
+    /> -->
+
+    <Task
+      v-for="(task, idx) in propertyComputed"
+      :key="idx"
+      :task="task"
+      :localStorageItems="localStorageItems"
     />
 
     </div>
@@ -31,28 +36,42 @@
 export default {
   data () {
     return{
-      newTask: ''
+      newTask: '',
+      localStorageItems: []
     }
   },
   methods: {
     addTask() {
       if(this.newTask) {
-        this.$store.commit('ADD_TASK', this.newTask);
-        // if (JSON.parse(localStorage.getItem("toDoItems")) !== null) {
-        //   const taskItems = JSON.parse(localStorage.getItem("toDoItems"));
-        //   taskItems.items.unshift(this.newTask)
-        //   localStorage.setItem('toDoItems', JSON.stringify(taskItems));
-        // }
-        // else{
-        //   const taskItems = { items: [] };
-        //   taskItems.items.unshift(this.newTask);
-        //   localStorage.setItem("toDoItems", JSON.stringify(taskItems));
-        // }
-
-        localStorage.setItem("toDoItems", JSON.stringify(this.$store.state.tasks));
+        //this.$store.commit('ADD_TASK', this.newTask);
+        if (JSON.parse(localStorage.getItem("toDoItems")) !== null) {
+          const taskItems = JSON.parse(localStorage.getItem("toDoItems"));
+          taskItems.items.unshift({content: this.newTask, done: false})
+          this.localStorageItems = taskItems;
+          localStorage.setItem('toDoItems', JSON.stringify(taskItems));
+        }
+        else{
+          const taskItems = { items: [] };
+          taskItems.items.unshift({content: this.newTask, done: false});
+          this.localStorageItems = taskItems;
+          localStorage.setItem("toDoItems", JSON.stringify(taskItems));
+        }
         this.newTask = '';
+
       }
     }
+  },
+  computed: {
+    propertyComputed(){
+      console.log("Hello");
+      this.localStorageItems = JSON.parse(localStorage.getItem('toDoItems'))?.items;
+      return this.localStorageItems;
+    }
   }
+  // mounted() {
+  //   this.$nextTick(() => {
+  //     this.localStorageItems = JSON.parse(localStorage.getItem('toDoItems'))?.items;
+  //   })
+  // },
 }
 </script>
